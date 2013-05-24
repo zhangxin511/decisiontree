@@ -1,0 +1,40 @@
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+	margin-left: 30px;
+	margin-right: 30px; 
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+.nav .nav-header {
+	font-size: 18px;
+	color: #FF9900;
+}
+
+.well {
+	background-image: url('/BMI/decisiontree/assets/img/gridbg.gif');
+	background-repeat: repeat;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.leaderboard h1 {
+	font-size: 40px;
+	margin-bottom: 5px;
+	line-height: 1;
+	letter-spacing: -1px;
+	color: #FF6600;
+}
+
+@media ( max-width : 980px) {
+	body {
+		padding-top: 0px;
+		padding-bottom: 0px;
+		margin-left: 0px;
+		margin-right: 0px; 
+	}	
+}

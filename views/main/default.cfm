@@ -15,7 +15,3 @@
 	</cfif>
 	<br/>Please note: your session will be expired after 10 minutes inactive.
 </div>
-
-<cfif structKeyExists(rc, "reload")>
-	<p>The framework cache (and application scope) have been reset.</p>
-</cfif>

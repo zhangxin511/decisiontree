@@ -22,14 +22,14 @@
 		</cfquery>	
 				
 		<cfscript>
-		for (x = 1; x <= qGetCodes.RecordCount; x=x+1) {
-			var code = new();
-			code.setId(qGetCodes.ID[x]);
-			code.setName(qGetCodes.name[x]);
-			
-			local.codes[code.getId()] = code;
-		}	
-		local.codes[0] = #qGetSelection.recordCount#;
+			for (x = 1; x <= qGetCodes.RecordCount; x=x+1) {
+				var code = new();
+				code.setId(qGetCodes.ID[x]);
+				code.setName(qGetCodes.name[x]);
+				
+				local.codes[code.getId()] = code;
+			}	
+			local.codes[0] = #qGetSelection.recordCount#;
 		</cfscript>		
 		<cfreturn local.codes>
     </cffunction>
@@ -40,7 +40,7 @@
 
 		<cfquery name="qGetSelection" datasource="#application.dsn#">
 			SELECT     Description, composed_charid, CAGB, PCI, ID as rule_ID, composed_id
-			FROM         tbl_rule
+			FROM         tbl_rules
 			WHERE     (ID IN
 			                          (SELECT     rule_ID
 			                            FROM          (SELECT     a.ID, a.rule_ID, a.code_select, b.ID AS Expr1, b.name, b.parent_ID, b.char_code
@@ -118,7 +118,35 @@
 		
 		<cfreturn result>
 	</cffunction>
-	
+
+	<cffunction name="getByShortCode" access="public" returntype="any">
+		<cfargument name="name" type="string" required="false" default="">
+		<cfset var result = "">
+		
+		<cfif len(name)>
+			<cfquery name="getCodebyCode" datasource="#Application.DSN#">
+				select * from tbl_codes where char_code='#arguments.name#'
+			</cfquery>
+		</cfif>
+
+		<cfif (not #IsDefined("getCodebyCode")#) or #getCodebyCode.recordCount# eq 0 >
+			<!--- if there is no user with a matching email address, return a blank user --->
+			<cfset result = new()>
+		<cfelse>
+			<cfscript>
+				var result=new();
+				result.setId(getCodebyCode.ID[1]);
+				result.setName(getCodebyCode.name[1]);
+				result.setChar_code(getCodebyCode.char_code[1]);
+				result.setParent_ID(getCodebyCode.parent_ID[1]);
+				if(getCodebyCode.parent_ID[1] neq "0")
+					result.setParent(get(getCodebyCode.parent_ID[1]));
+			</cfscript>	
+		</cfif>
+		
+		<cfreturn result>
+	</cffunction>
+		
 	<cffunction name="save" access="public" output="false" returntype="void">		
 		<cfargument name="code" type="any" required="true">
 		<cflock type="exclusive" name="savecode" timeout="50" throwontimeout="false">
@@ -231,7 +259,6 @@
 		<cfif not len(arguments.char_code)>
 			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please enter the char code of code!</div>') />
 		</cfif>
-	
 
 		<!--- Parent id is required--->
 		<cfif not len(arguments.parent_ID) or not isnumeric(arguments.parent_ID)>
@@ -245,10 +272,18 @@
 		<cfelseif  len(arguments.code.getName()) and compare(arguments.name, arguments.code.getName()) and codeByName.getId()>			
 			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Update failed! A code already exists with this name, please enter a new code.</div>') />
 		</cfif>
+		
+		<!--- check to see if a code exists with the same name --->
+		<cfset var codeByShortCode = getByShortCode(arguments.char_code) />
+		
+		<cfif  not len(arguments.code.getChar_code()) and len(arguments.char_code) and codeByShortCode.getId()>			
+			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Insert failed! A code already exists with this database code, please enter a new  database code.</div>') />
+		<cfelseif  len(arguments.code.getChar_code()) and compare(arguments.char_code, arguments.code.getChar_code()) and codeByShortCode.getId()>			
+			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Update failed! A code already exists with this database code, please enter a new  database code.</div>') />
+		</cfif>		
 
 		<cfreturn aErrors />
 	</cffunction>	
-
 		
 	<cffunction name="new" access="public" output="false" returntype="any">
 		<cfreturn createObject("component", "decisionTree.model.Code").init()>

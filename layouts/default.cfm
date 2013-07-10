@@ -103,10 +103,10 @@
 											<li class="divider"></li>
 										</cfif>
 										<li>
-											<a href="index.cfm?action=code.search" title="List Decision Codes">Decision Search Tree (By Vertical)</a>
+											<a href="index.cfm?action=code.search" title="List Decision Codes">Decision Search Tree (Vertical View)</a>
 										</li>
 										<li>
-											<a href="index.cfm?action=code.search&horizon=true" title="List Decision Codes">Decision Search Tree (By Horizon)</a>
+											<a href="index.cfm?action=code.search&horizon=true" title="List Decision Codes">Decision Search Tree (Horizontal View)</a>
 										</li>
 										<cfif session.auth.user.getRoleId() is 1>
 											<li>

@@ -1,5 +1,5 @@
 <ul class="breadcrumb">
-	Your current location:  <li class="active"><a href="#">Home</a><span class="divider">/</span></li>
+	Your current location:  <li><a href="#">Home</a><span class="divider">/</span></li>
 	<li><a href="#">DST Management</a> <span class="divider">/</span></li>
 	<li class="active">Angiographic and Clinical Indicators (By Sequence)</li>
 </ul>

@@ -28,7 +28,7 @@ function collapse(elem, hor){
 			data: {condition: condition}
 		})
 		.done(function( response ) {
-
+			console.log(response);
 			var id="#code-container"+curlevel;
 						
 			jQuery('<div/>', {
@@ -123,7 +123,7 @@ function collapse(elem, hor){
 			}				
 		})
 		.always(function() { 
-
+			
 		});
 
 	}, 1);		

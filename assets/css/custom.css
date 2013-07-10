@@ -55,6 +55,19 @@ body {
   min-height: 9px;
 }
 
+
+.breadcrumb {
+  background-color: #d9edf7;
+}
+
+.breadcrumb > .active {
+  font-weight: bold;
+}
+
+.breadcrumb > li > .divider {
+	font-weight: bold;
+}
+
 @media ( max-width : 980px) {
 	body {
 		padding-top: 0px;

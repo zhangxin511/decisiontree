@@ -1,5 +1,5 @@
 <ul class="breadcrumb">
-	Your current location:  <li class="active"><a href="#">Home</a><span class="divider">/</span></li>
+	Your current location:  <li><a href="#">Home</a><span class="divider">/</span></li>
 	<li><a href="#">User Management</a> <span class="divider">/</span></li>
 	<li class="active">Add or Update User</li>
 </ul>

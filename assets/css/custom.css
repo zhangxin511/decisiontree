@@ -30,6 +30,26 @@ body {
 	color: #FF6600;
 }
 
+.form-horizontal .control-label {
+  width: 180px;
+}
+.form-horizontal .controls {
+  margin-left: 200px;
+}
+
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover,
+.nav-tabs > .active > a:focus {
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #356635;            
+}
+
+
+.multiselect-group {
+    font-weight: bold;
+    text-decoration: underline;
+
 @media ( max-width : 980px) {
 	body {
 		padding-top: 0px;

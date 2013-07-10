@@ -1,32 +1,46 @@
-<cfset local.codes = rc.data />
-<cfif structCount(local.codes) EQ 1>
-	<!--- Should not happen --->
-	<div class="alert alert-error">
-		<button type="button" class="close" data-dismiss="alert">&times;</button>
-		<strong>Error!</strong> Now such available selections.
-	</div>
-<cfelse>
-	<div class="alert alert-info">
-		<button type="button" class="close" data-dismiss="alert">&times;</button>
-		Totally <strong><cfoutput>#local.codes[0]#</cfoutput></strong> records, please select one of the rest categories below to reduce numbers.
-	</div>	
-	<!-- Only required for left/right tabs -->
-	<div class="tabbable" id="code-container0">		
-		<ul class="nav nav-tabs" id="nav0">
-			<cfloop collection="#local.codes#" item="local.id">
-				<cfif local.id neq 0>				
-					<cfset local.code = local.codes[local.id]>
-					<li id="<cfoutput>#local.code.getId()#</cfoutput>0">
-						<a href="#tab<cfoutput>#local.code.getId()#</cfoutput>0" data-toggle="tab" onclick="collapse(this)">
-							<cfoutput>#local.code.getName()#</cfoutput>
-						</a>
-					</li>					
-				</cfif>
-			</cfloop>		
-		</ul>		
-	</div>
-	
-</cfif>
+<ul class="breadcrumb">
+	Your current location:  <li class="active"><a href="#">Home</a><span class="divider">/</span></li>
+	<li><a href="#">DST Management</a> <span class="divider">/</span></li>
+	<li class="active">Angiographic and Clinical Indicators (By Sequence)</li>
+</ul>
+<cfset local.tempcodes = rc.data>
+<cfset local.codes=ArrayNew(1)>
 
-<script src="assets/js/collapse.js">>
-</script>
+<cfloop collection="#local.tempcodes#" item="local.id">
+	<cfset local.codes[local.id] = local.tempcodes[local.id]>
+</cfloop>
+
+<cfoutput>
+<table class="table table-bordered table-striped table-hover table-condense">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Parent</th>
+			<th>Char Code</th>
+			<th>Delete?</th>
+		</tr>
+	</thead>
+	<tbody>		
+		<cfloop index="codeindex" from="1" to="#ArrayLen(local.codes)#" >
+			<cfif structKeyExists(local.tempcodes, "#codeindex#")>			
+				<cfset local.code = local.codes[codeindex]>		
+				<tr>
+					<td>#local.code.getID()#</td>
+					<td><a href="index.cfm?action=code.form&id=#local.code.getID()#&way=list">#local.code.getName()#</a></td>
+					<cfif #local.code.getParent_ID()#>
+						<td>#local.code.getParent().getName()# (#local.code.getParent().getChar_Code()#)</td>
+					<cfelse>
+						<td>Root Node</td>
+					</cfif>
+					
+					<td>#local.code.getChar_Code()#</td>
+					<td><a href="index.cfm?action=code.delete&id=#local.code.getID()#">DELETE</a></td>
+				</tr>
+			</cfif>
+		</cfloop>
+	</tbody>
+</table>
+</cfoutput>
+
+<a href="index.cfm?action=code.form">Add new code?</a>

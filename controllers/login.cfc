@@ -69,7 +69,7 @@
 		<cfset session.auth.isLoggedIn = false />
 		<cfset session.auth.fullname = 'Guest' />
 		<cfset structdelete(session.auth,'user') />
-		<cfset rc.message = ['<div class="row"><div class="alert alert-success span6"><button type="button" class="close" data-dismiss="alert">&times;</button>You have safely logged out!</div></div>'] />
+		<cfset rc.message = ['<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>You have safely logged out!</div>'] />
 		<cfset variables.fw.redirect('login','message') />
 	</cffunction>
 

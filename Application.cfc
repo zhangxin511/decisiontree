@@ -7,7 +7,7 @@
 	this.mappings["/decisionTree"] = getDirectoryFromPath(getCurrentTemplatePath());
 	this.name = 'DecisionTree';
 	this.sessionmanagement = true;
-	this.sessiontimeout = createTimeSpan(0,0,15,0);
+	this.sessiontimeout = createTimeSpan(0,0,30,0);
 	
 	function setupApplication()
 	{
@@ -35,4 +35,5 @@
 	    }
 	}	
 	</cfscript>
+
 </cfcomponent>

@@ -6,6 +6,10 @@
 
 	<bean id="roleService" class="decisionTree.services.Role" singleton="true">
 	</bean>
+	
+
+	<bean id="passService" class="decisionTree.services.Password" singleton="true">
+	</bean>	
 
 	<bean id="userService" class="decisionTree.services.User" singleton="true">
 		<argument name="departmentService">
@@ -14,10 +18,20 @@
 		<argument name="roleService">
 			<ref bean="roleService" />
 		</argument>
+		<argument name="passService">
+			<ref bean="passService" />
+		</argument>		
 	</bean>
 
 	<bean id="codeService" class="decisionTree.services.Code" singleton="true">
 	</bean>
+	
+
+	<bean id="ruleService" class="decisionTree.services.Rule" singleton="true">
+		<argument name="codeService">
+			<ref bean="codeService" />
+		</argument>		
+	</bean>	
 	<!--
 		<bean> - Define a bean with an id (referenced using that value), the class path
 				(can use a mapping), and whether its a singleton or not (boolean)

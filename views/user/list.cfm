@@ -1,5 +1,10 @@
-<cfset local.users = rc.data>
+<ul class="breadcrumb">
+	Your current location:  <li class="active"><a href="#">Home</a><span class="divider">/</span></li>
+	<li><a href="#">User Management</a> <span class="divider">/</span></li>
+	<li class="active">list User</li>
+</ul>
 
+<cfset local.users = rc.data>
 <cfoutput>
 <table class="table table-bordered table-striped table-hover table-condense">
 	<thead>
@@ -9,6 +14,7 @@
 			<th>Email</th>
 			<th>Department</th>
 			<th>Role</th>
+			<th>Reset Password</th>
 			<th>Delete</th>
 		</tr>
 	</thead>
@@ -26,6 +32,7 @@
 				<td>#local.user.getEmail()#</td>
 				<td>#local.user.getDepartment().getName()#</td>
 				<td>#local.user.getRole().getName()#</td>
+				<td><a href="index.cfm?action=user.resetPass&id=#local.id#">RESET</a></td>
 				<td><a href="index.cfm?action=user.delete&id=#local.id#">DELETE</a></td>
 			</tr>
 		</cfloop>

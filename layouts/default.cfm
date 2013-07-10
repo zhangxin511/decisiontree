@@ -11,11 +11,12 @@
 		<link href="assets/css/bootstrap.css" rel="stylesheet">
 		<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
 		<link href="assets/css/custom.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-select.min.css">
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.js"></script>
 			<![endif]-->
-		<script src="assets/js/jquery-1.9.1.min.js"></script>
+		<script src="assets/js/jquery-2.0.3.min.js"></script>
 	</head>
 	<body>
 		<div class="navbar navbar-fixed-top">
@@ -60,13 +61,13 @@
 							<li class="nav-header">Menu</li>
 							<li><a href="/bmi/decisiontree/index.cfm">Home</a></li>
 							<cfif session.auth.isLoggedIn>
+								<!--user management-->
 								<li class="dropdown">
 									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 										User Mangement
 										<b class="caret"></b>
 									</a>
-									<ul class="dropdown-menu">
-									<!-- users -->
+									<ul class="dropdown-menu">									
 										<cfif session.auth.user.getRoleId() is 1>
 											<li>
 												<a href="index.cfm?action=user.list" title="View the list of users">List Users</a>
@@ -76,13 +77,48 @@
 											</li>
 										</cfif>
 										<li>
-											<a href="index.cfm?action=main.password" title="Resets framework cache">Change Password</a>
+											<a href="index.cfm?action=main.password" title="Resets password">Change Password</a>
 										</li>								
 									</ul>
 								</li>
-								<li>
-									<a href="index.cfm?action=code.list" title="List Decision Codes">List Codes</a>
+								
+								<!--code management-->
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+										DST Mangement
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+									<!-- users -->
+										<cfif session.auth.user.getRoleId() is 1>
+											<li>
+												<a href="index.cfm?action=code.list" title="View the list of indicators">Angiographic and Clinical Indicators (By Sequence)</a>
+											</li>										
+											<li>
+												<a href="index.cfm?action=code.listByCategory" title="View the list of indicators">Angiographic and Clinical Indicators (By Category)</a>
+											</li>											
+											<li>
+												<a href="index.cfm?action=code.form" title="Fill out form to add new indicators">Add New Indicators</a>
+											</li>
+											<li class="divider"></li>
+										</cfif>
+										<li>
+											<a href="index.cfm?action=code.search" title="List Decision Codes">Decision Search Tree (By Vertical)</a>
+										</li>
+										<li>
+											<a href="index.cfm?action=code.search&horizon=true" title="List Decision Codes">Decision Search Tree (By Horizon)</a>
+										</li>
+										<cfif session.auth.user.getRoleId() is 1>
+											<li>
+												<a href="index.cfm?action=rule.list" title="View the list of rules">List Rules</a>
+											</li>										
+											<li>
+												<a href="index.cfm?action=rule.form" title="Fill out form to add new rules">Add New Rules</a>
+											</li>											
+										</cfif>																
+									</ul>
 								</li>								
+								
 								<li>
 									<a href="index.cfm?action=login.logout" title="Log out the system">Logout</a>
 								</li>	
@@ -95,30 +131,34 @@
 					<div class="row">
 						<div class="span12">
 							<div class="hero-unit well leaderboard">
-								<h1>Proof of Concept System</h1>
-								<p>A dynamic information look-up and decision making system developed by Biostatistics Consulting Center - Rollins School of Public Health.</p>
+								<h1>Decision Search Tree</h1>
+								<p>CABG/PCI intervention based on angiographic and clinical findings.</p>
 							</div>
 						</div>
-					</div>
-					
-					<div id="primary" class="row">
-						<div id="content" class="span12">
-							<!--- display any messages to the user --->
-							<cfif not arrayIsEmpty(rc.message)>
-								<cfloop array="#rc.message#" index="msg">
-									<cfoutput>#msg#</cfoutput>
-								</cfloop>
-							</cfif>					
-							<cfoutput>#body#</cfoutput>				
-						</div>
-					</div> 					
+					</div>			
 				</div>
 			</div>
 			<!--end of row-->
+			<!--Start contents-->
+			<div id="primary" class="row-fluid">
+				<div id="content" class="span12">
+					<!--- display any messages to the user --->
+					<!cfdump var="#rc#"> 
+					<cfoutput>#body#</cfoutput>
+					<cfif not arrayIsEmpty(rc.message)>
+						<cfloop array="#rc.message#" index="msg"><cfoutput>
+							#msg#
+						</cfoutput></cfloop>
+					</cfif>					
+				</div>
+			</div>
+			<!--End contents-->		
 		</div>
 		
 
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script src="assets/js/bootstrap.min.js"></script> 
+		<script type="text/javascript" src="assets/js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="assets/js/bootstrap-multiselect.js"></script>
 	</body>
 </html>

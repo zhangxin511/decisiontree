@@ -15,21 +15,27 @@
 
 	<cffunction name="password" access="public" returntype="void">
 		<cfargument name="rc" type="struct" required="yes" />
-		<cfset rc.id = session.auth.user.getId() />
-		<cfset rc.user = getUserService().get(rc.id) />
+				
+		<cfset rc.user = getUserService().get(session.auth.user.getId()) />
 	</cffunction>
 
 	<cffunction name="change" access="public" output="false" returntype="void">
 		<cfargument name="rc" type="struct" required="true">
+		
 		<cfset var userService = getUserService() />
 		<cfset var newPasswordHash = '' />
 
+		<cfif (not isDefined("rc.id")) or (rc.id neq session.auth.user.getId())>
+			<cfset rc.message = ['<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>You do not have previliege to change others password.</div>'] />
+			<cfset variables.fw.redirect('main','message') />		
+		</cfif>
+		
 		<!--- validate new password --->
 		<cfset rc.user = userService.get(argumentCollection=rc) />
 		<cfset rc.message = userService.checkPassword(argumentCollection=rc) />
-
+		
 		<!--- if the new password failed, redirect to the form --->
-		<cfif not arrayIsEmpty(rc.message)>
+ 		<cfif not arrayIsEmpty(rc.message)>
 			<cfset variables.fw.redirect('main.password','message') />
 		</cfif>
 
@@ -41,7 +47,7 @@
 
 		<!--- save the user and redirect --->
 		<cfset userService.save(rc.user) />
-		<cfset rc.message = ['Your password was changed'] />
+		<cfset rc.message = ['<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>Your password was changed.</div>'] />
 		<cfset variables.fw.redirect('main','message') />
 	</cffunction>
 

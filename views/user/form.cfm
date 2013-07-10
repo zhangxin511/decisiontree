@@ -1,10 +1,15 @@
+<ul class="breadcrumb">
+	Your current location:  <li class="active"><a href="#">Home</a><span class="divider">/</span></li>
+	<li><a href="#">User Management</a> <span class="divider">/</span></li>
+	<li class="active">Add or Update User</li>
+</ul>
 <cfset local.user = rc.user>
 <cfset local.depts = rc.departments>
 <cfset local.roles = rc.roles>
-
 <cfoutput>
 	<form class="form-horizontal" method="post" action="index.cfm?action=user.save">
 		<legend>Enter user information</legend>
+		<input type="hidden" name="id" id="id" value="#local.user.getID()#">
 		<div class="control-group">
 		  	<label for="firstName" class="control-label">First Name:</label>
 		  	<div class="controls">
@@ -59,15 +64,6 @@
 				</select>
 			</div>
 		</div>	
-		
-		<cfif not local.user.getId()>
-			<div class="control-group">
-				<label for="password" class="control-label">Password:</label>
-				<div class="controls">
-					<input type="text" name="password" id="password" required>
-				</div>
-			</div>
-		</cfif>
 		
 		 <div class="control-group">
 			 <div class="controls">

@@ -1,10 +1,11 @@
-function collapse(elem){
+function collapse(elem, hor){
 	var info=$(elem).parent().attr("id");
 	var curlevel=info.substr(-1);
 	var nextleve=parseInt(curlevel)+1;		
 	var codeid=info.substr(0,info.length-1);
-	$(".alert").remove();
-	$("#info").remove();
+	//removed for new information refresh;
+	$(".alert").remove();	
+	$("#infotable").remove();
 	$(elem).parent().parent().next().remove();	
 
 	setTimeout(function() {		
@@ -20,7 +21,6 @@ function collapse(elem){
 				i++;
 			}			
 		});
-		console.log(condition);
 
 		$.ajax({
 			type:"post",
@@ -28,13 +28,10 @@ function collapse(elem){
 			data: {condition: condition}
 		})
 		.done(function( response ) {
-			
+			if( typeof console != 'undefined' ) {
+				console.log(response);
+			}			
 			var id="#code-container"+curlevel;
-			jQuery('<div/>', {
-				"class":'alert alert-info'
-			}).appendTo(id);
-
-			$(".alert").html("Totally <strong>"+response[0].DATA.length+"</strong> records, please select one of the rest categories below to reduce numbers.");
 						
 			jQuery('<div/>', {
 				id: "tab-content"+curlevel,
@@ -45,60 +42,80 @@ function collapse(elem){
 				id: "tab"+codeid+curlevel,
 				"class":'tab-pane active'
 			}).appendTo("#tab-content"+curlevel);	
-
-			jQuery('<div/>', {
-				id: "code-container"+nextleve,
-				"class":'tabbable'
-			}).appendTo("#tab"+codeid+curlevel);
-
-			jQuery('<ul/>', {
-				id: "nav"+nextleve,
-				"class":'nav nav-tabs'
-			}).appendTo("#code-container"+nextleve);
-
-			for(j=0;j<response[1].DATA.length;j++){
-				var tabidchar=response[1].DATA[j][0].toString();
-				jQuery('<li/>', {
-					id:tabidchar+nextleve
-				}).appendTo("#nav"+nextleve);
-				jQuery('<a/>', {
-					href:"#tab"+tabidchar+nextleve,
-					"data-toggle":"tab",
-					onclick:"collapse(this)",
-					text:response[1].DATA[j][1]
-				}).appendTo("#"+tabidchar+nextleve);				
+			console.log(hor);
+			if(hor){
+				jQuery('<div/>', {
+					id: "code-container"+nextleve,
+					"class":'tabbable tabs'
+				}).appendTo("#tab"+codeid+curlevel);
+			}else{
+				jQuery('<div/>', {
+					id: "code-container"+nextleve,
+					"class":'tabbable tabs-left'
+				}).appendTo("#tab"+codeid+curlevel);				
 			}
-
-			jQuery('<div/>', {
-				id:"info",
-				"class":'row'
-			}).appendTo("#code-container0");
 			
-			var table = $('<table></table>').addClass('table').addClass('table-striped').addClass('table-bordered');
+			jQuery('<div/>', {
+				"class":'alert alert-info'
+			}).appendTo("#code-container"+nextleve);
+			var tablevel=parseInt(curlevel)+1;
+			$(".alert").html("<span class='text-error'>Decision tab "+tablevel+ ":</span> <strong>"+response[0].DATA.length+"</strong> indicators found.");
+			if(response[1].DATA.length>1){
+				jQuery('<ul/>', {
+					id: "nav"+nextleve,
+					"class":'nav nav-tabs'
+				}).appendTo("#code-container"+nextleve);
+	
+				for(j=0;j<response[1].DATA.length;j++){
+					var tabidchar=response[1].DATA[j][3].toString();
+					jQuery('<li/>', {
+						id:tabidchar+nextleve
+					}).appendTo("#nav"+nextleve);
+					if(hor){
+						jQuery('<a/>', {
+							href:"#tab"+tabidchar+nextleve,
+							"data-toggle":"tab",
+							onclick:"collapse(this,true)",
+							text:response[1].DATA[j][0]
+						}).appendTo("#"+tabidchar+nextleve);
+					}else{
+						jQuery('<a/>', {
+							href:"#tab"+tabidchar+nextleve,
+							"data-toggle":"tab",
+							onclick:"collapse(this,false)",
+							text:response[1].DATA[j][0]
+						}).appendTo("#"+tabidchar+nextleve);						
+					}
+				}
+			}
+			jQuery('<div/>', {
+				id:"infotable",
+				style:"float:left; width:100%"
+				
+			}).appendTo("#code-container"+nextleve);
+			
+			var table = $('<table></table>').addClass('table').addClass('table-striped').addClass('table-bordered').addClass('table-hover').addClass('table-condensed');
 			var header=$('<thead></thead>');
 			var headerrow = $('<tr></tr>');
-			headerrow.append($('<th></th').text("Selection"));
+			headerrow.append($('<th></th').text("Indicator ID"));
+			headerrow.append($('<th></th').text("Indicator Description"));
+			headerrow.append($('<th></th').text("Indicator char code"));
 			headerrow.append($('<th></th').text("CABG"));
 			headerrow.append($('<th></th').text("PCI"));
-			headerrow.append($('<th></th').text("Yes?"));
 			header.append(headerrow);
 			table.append(header);
 			var tbody=$('<tbody></tbody>');
 			for(i=0; i<response[0].DATA.length; i++){
 				var row = $('<tr></tr>');
-				
+				row.append($('<td></td>').text(response[0].DATA[i][4]));
+				row.append($('<td></td>').text(response[0].DATA[i][0]));
 				row.append($('<td></td>').text(response[0].DATA[i][1]));
-				row.append($('<td></td>').text("CABG code..."));
-				row.append($('<td></td>').text("PCI code..."));
-				row.append($('<td></td>').html("<input type='checkbox'>"));
+				row.append($('<td></td>').text(response[0].DATA[i][2]));
+				row.append($('<td></td>').text(response[0].DATA[i][3]));
 			    tbody.append(row);
 			}
 			table.append(tbody);
-			$("#info").append(table);
-			
-			if( typeof console != 'undefined' ) {
-				console.log(response[0]);
-			}
+			$("#infotable").append(table);
 		})
 
 		.fail(function( jqxhr, textStatus, error ) {

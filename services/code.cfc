@@ -33,7 +33,6 @@
 		</cfscript>		
 		<cfreturn local.codes>
     </cffunction>
-
 	
 	<cffunction name="update" access="remote" output="true" returntype="struct">
 		<cfargument name="condition" type="string" required="true" />
@@ -93,7 +92,6 @@
 		<cfreturn result>
 	</cffunction>	
 
-
 	<cffunction name="getByName" access="public" returntype="any">
 		<cfargument name="name" type="string" required="false" default="">
 		<cfset var result = "">
@@ -120,8 +118,7 @@
 		
 		<cfreturn result>
 	</cffunction>
-
-
+	
 	<cffunction name="save" access="public" output="false" returntype="void">		
 		<cfargument name="code" type="any" required="true">
 		<cflock type="exclusive" name="savecode" timeout="50" throwontimeout="false">

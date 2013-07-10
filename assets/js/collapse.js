@@ -28,9 +28,7 @@ function collapse(elem, hor){
 			data: {condition: condition}
 		})
 		.done(function( response ) {
-			if( typeof console != 'undefined' ) {
-				console.log(response);
-			}			
+
 			var id="#code-container"+curlevel;
 						
 			jQuery('<div/>', {
@@ -42,7 +40,7 @@ function collapse(elem, hor){
 				id: "tab"+codeid+curlevel,
 				"class":'tab-pane active'
 			}).appendTo("#tab-content"+curlevel);	
-			console.log(hor);
+
 			if(hor){
 				jQuery('<div/>', {
 					id: "code-container"+nextleve,

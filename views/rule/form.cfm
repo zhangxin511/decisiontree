@@ -14,11 +14,12 @@
 <cfset local.rule = rc.rule>
 <form class="form-horizontal" method="post" action="index.cfm?action=rule.save">
 	<legend>Enter rule information</legend>
-	<input type="hidden" name="id" id="id" value="#local.rule.getID()#">
+	<input type="hidden" name="id" id="id" value="<cfoutput>#local.rule.getID()#</cfoutput>">
+	<input type="hidden" name="rule_code" id="rule_code" value="<cfoutput>#local.rule.getComp_ID()#</cfoutput>">
 	<div class="control-group">
 		<label for="decs" class="control-label">Rule Description:</label>
 		<div class="controls">
-			<input class="input-xxlarge" type="text" name="desc" id="desc" placeholder="Enter Description for Rule" value="<cfoutput>#local.rule.getDesc()#</cfoutput>">
+			<input class="input-xxlarge" type="text" name="desc" id="desc" placeholder="Enter Description for Rule" value="<cfoutput>#local.rule.getDesc()#</cfoutput>" required>
 		</div>	
 	</div>
 	

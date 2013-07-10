@@ -1,5 +1,7 @@
 //document.ready register for suboption loading
 $(document).ready(function(){
+	var rules=$("#rule_code").attr("value").split(",");
+
 	$('.group').each(function(){
 		var parent=$(this).attr("code");
 		var element=$(this);
@@ -11,10 +13,12 @@ $(document).ready(function(){
 		.done(function( response ) {
 			for(i=0; i<response.DATA.length; i++){
 				var opt = $('<option></option>').attr('value', response.DATA[i][3]).html(response.DATA[i][0]);
-				element.append(opt);
 
-			}
-			console.log(element.html());			
+				if(jQuery.inArray(response.DATA[i][3].toString(), rules)!=-1){
+					opt.attr("selected","selected");
+				}
+				element.append(opt);
+			}		
 		})
 
 		.fail(function( jqxhr, textStatus, error ) {
@@ -35,7 +39,7 @@ $(document).ajaxStop(function() {
  		buttonClass: 'btn',
   		buttonWidth: 'auto',
   		buttonContainer: '<div class="btn-group" />',
-  		maxHeight: false,
+  		maxHeight: 400,
   		enableFiltering:true,
   		enableCaseInsensitiveFiltering: true,
   		filterPlaceholder: 'Search a code',

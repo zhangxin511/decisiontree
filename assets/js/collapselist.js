@@ -8,9 +8,6 @@ $(document).ready(function(){
 			data: {parent: parent}
 		})
 		.done(function( response ) {
-			if( typeof console != 'undefined' ) {
-				console.log(response);
-			}
 			var table = $('<table></table>').addClass('table').addClass('table-striped').addClass('table-bordered').addClass('table-hover').addClass('table-condensed');
 			var header=$('<thead></thead>');
 			var headerrow = $('<tr></tr>');

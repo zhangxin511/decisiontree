@@ -64,19 +64,22 @@
 		<cflock type="exclusive" name="saverule" timeout="50" throwontimeout="false">
 			<!--- since we have an id we are updating a user --->
 			<cfif arguments.rule.getId()>
-				<cfquery name="updateruleinfo" datasource="#application.dsn#">
-					update  tbl_rules
-					set name='#arguments.rule.getName()#',
-						char_rule='#arguments.rule.getChar_rule()#',
-						parent_ID= '#arguments.rule.getParent_ID()#'
-					where id=#arguments.rule.getId()#
-				</cfquery>
+				
 			<cfelse>
 			<!--- otherwise a new user is being saved --->
 				<cfquery name="saveruleinfo" datasource="#application.dsn#">
-					insert into  tbl_rules  (name, char_rule, parent_ID)
-					VALUES ('#arguments.rule.getName()#', '#arguments.rule.getChar_rule()#', '#arguments.rule.getParent_ID()#');
+					insert into  tbl_rules  (Description, composed_charid, CAGB,PCI,composed_id)
+					VALUES ('#arguments.rule.getDesc()#', '#arguments.rule.getComp_char()#', '#arguments.rule.getCAGB()#', '#arguments.rule.getPci()#', '#arguments.rule.getComp_ID()#');					
 				</cfquery>			
+				<cfquery name="getInfo" datasource="#application.dsn#">
+					select top(1) ID from tbl_rules order by ID desc
+				</cfquery>
+				<cfloop index="i" from="1" to="#ListLen(arguments.rule.getComp_ID())#">
+					<cfquery name="saveaddinfo" datasource="#application.dsn#">
+						insert into  tbl_rule_map  (rule_ID, code_select)
+						VALUES ('#getInfo.ID#','#ListGetAt(arguments.rule.getComp_ID(),i)#');					
+					</cfquery>					
+				</cfloop>
 			</cfif>
 		</cflock>
 	</cffunction>		
@@ -107,40 +110,40 @@
 
 	<cffunction name="validate" access="public" output="true" returntype="Array">
 		<cfargument name="rule" type="any" required="true" />
-		<cfargument name="name" type="string" required="false" default="" />
+		<cfargument name="desc" type="string" required="false" default="" />
 		<cfargument name="char_rule" type="string" required="false" default="" />
-		<cfargument name="parent_ID" type="string" required="false" default="" />
-
-		<cfset var aErrors = arrayNew(1) />
+		<cfargument name="CAGB" type="string" required="false" default="" />
+		<cfargument name="PCI" type="string" required="false" default="" />
 		
+		<cfset var aErrors = arrayNew(1) />	
 
-		<!--- Name is required --->
-		<cfif not len(arguments.name)>
-			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please enter the name of rule!</div>') />
+		<!--- Desc is required --->
+		<cfif not len(arguments.desc)>
+			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please enter the description of rule!</div>') />
 		</cfif>
-
-		<!--- char rule is required --->
+		<!--- Char rule is required --->
 		<cfif not len(arguments.char_rule)>
-			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please enter the char rule of rule!</div>') />
+			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please enter the composited code of rule!</div>') />
 		</cfif>
-	
-
-		<!--- Parent id is required--->
-		<cfif not len(arguments.parent_ID) or not isnumeric(arguments.parent_ID)>
-			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please select a parent!</div>') />
-		</cfif>
-			
-		<!--- check to see if a rule exists with the same name --->
-		<cfset var ruleByName = getByName(arguments.name) />
-		<cfif  not len(arguments.rule.getName()) and len(arguments.name) and ruleByName.getId()>			
-			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Insert failed! A rule already exists with this name, please enter a new rule.</div>') />
-		<cfelseif  len(arguments.rule.getName()) and compare(arguments.name, arguments.rule.getName()) and ruleByName.getId()>			
-			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Update failed! A rule already exists with this name, please enter a new rule.</div>') />
+		<!--- Treatment is required--->
+		<cfif (not len(arguments.CAGB)) and (not len(arguments.PCI)) >
+			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please Enter at least one value for the treatment!</div>') />
 		</cfif>
 
 		<cfreturn aErrors />
 	</cffunction>	
+
+	<cffunction name="populateComp_char" access="public" output="true" returntype="string">
+		<cfargument name="comp_ID" type="string" required="yes" default="" />
 		
+		<cfset var comp_char = "" />			
+		<cfloop index="i" from="1" to="#ListLen(comp_ID)#">
+			<cfset comp_char = ListAppend(comp_char, getCodeService().get(ListGetAt(comp_ID,i)).getChar_code())>
+		</cfloop>
+
+		<cfreturn comp_char />
+	</cffunction>	
+			
 	<cffunction name="new" access="public" output="false" returntype="any">
 		<cfreturn createObject("component", "decisionTree.model.Rule").init()>
 	</cffunction>	

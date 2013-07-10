@@ -49,6 +49,11 @@ body {
 .multiselect-group {
     font-weight: bold;
     text-decoration: underline;
+}
+
+.checkbox {
+  min-height: 9px;
+}
 
 @media ( max-width : 980px) {
 	body {

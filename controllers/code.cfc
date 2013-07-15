@@ -35,6 +35,7 @@
 			<cfset rc.code = getCodeService().get(argumentCollection=rc)>
 		</cfif>
 		<cfset rc.parents = getCodeService().getParentList()>
+		<cfset rc.available = getCodeService().getAvailableParentList()>
 	</cffunction>
 
 	<cffunction name="startSave" access="public" output="false" returntype="void">

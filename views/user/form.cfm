@@ -8,7 +8,11 @@
 <cfset local.roles = rc.roles>
 <cfoutput>
 	<form class="form-horizontal" method="post" action="index.cfm?action=user.save">
-		<legend>Enter user information</legend>
+		<cfif local.user.getID()>
+			<legend>Edit Existing user information</legend>
+		<cfelse>
+			<legend>Enter new user information</legend>
+		</cfif>		
 		<input type="hidden" name="id" id="id" value="#local.user.getID()#">
 		<div class="control-group">
 		  	<label for="firstName" class="control-label">First Name:</label>
@@ -65,10 +69,10 @@
 			</div>
 		</div>	
 		
-		 <div class="control-group">
-			 <div class="controls">
-				 <input type="submit" value="Save User" class="btn btn-primary">
-			 </div>
-		 </div>					
+		<div class="control-group">
+			<div class="controls">
+				<input type="submit" value="Save User" class="btn btn-primary">
+			</div>
+		</div>					
 	</form>
 </cfoutput>

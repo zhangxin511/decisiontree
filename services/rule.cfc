@@ -68,8 +68,8 @@
 			<cfelse>
 			<!--- otherwise a new user is being saved --->
 				<cfquery name="saveruleinfo" datasource="#application.dsn#">
-					insert into  tbl_rules  (Description, composed_charid, CAGB,PCI,composed_id)
-					VALUES ('#arguments.rule.getDesc()#', '#arguments.rule.getComp_char()#', '#arguments.rule.getCAGB()#', '#arguments.rule.getPci()#', '#arguments.rule.getComp_ID()#');					
+					insert into  tbl_rules  (Description, composed_charid, CABG,PCI,composed_id)
+					VALUES ('#arguments.rule.getDesc()#', '#arguments.rule.getComp_char()#', '#arguments.rule.getCABG()#', '#arguments.rule.getPci()#', '#arguments.rule.getComp_ID()#');					
 				</cfquery>			
 				<cfquery name="getInfo" datasource="#application.dsn#">
 					select top(1) ID from tbl_rules order by ID desc
@@ -98,7 +98,7 @@
 			rule.setDesc(qGetRules.Description[x]);
 			rule.setComp_ID(qGetRules.composed_id[x]);
 			rule.setComp_char(qGetRules.composed_charid[x]);
-			rule.setCagb(qGetRules.CAGB[x]);
+			rule.setCABG(qGetRules.CABG[x]);
 			rule.setPci(qGetRules.PCI[x]);
 			local.rules[x] = rule;			
 			variables.rules[rule.getId()] = rule;
@@ -112,7 +112,7 @@
 		<cfargument name="rule" type="any" required="true" />
 		<cfargument name="desc" type="string" required="false" default="" />
 		<cfargument name="char_rule" type="string" required="false" default="" />
-		<cfargument name="CAGB" type="string" required="false" default="" />
+		<cfargument name="CABG" type="string" required="false" default="" />
 		<cfargument name="PCI" type="string" required="false" default="" />
 		
 		<cfset var aErrors = arrayNew(1) />	
@@ -126,7 +126,7 @@
 			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please enter the composited code of rule!</div>') />
 		</cfif>
 		<!--- Treatment is required--->
-		<cfif (not len(arguments.CAGB)) and (not len(arguments.PCI)) >
+		<cfif (not len(arguments.CABG)) and (not len(arguments.PCI)) >
 			<cfset arrayAppend(aErrors,'<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>Please Enter at least one value for the treatment!</div>') />
 		</cfif>
 

@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>BCC-Porject: Decision Tree</title>
+		<title>Decision Search Tree PI: Omar Lattouf MD/PhD</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="This is a BCC project, developed under bootstrap">
 		<meta name="author" content="Xin Zhang">
@@ -36,17 +36,25 @@
 							<a href="#" class="navbar-link"><cfoutput>#session.auth.fullname#</cfoutput></a>
 						</p>
 						<ul class="nav">
-							<li class="active">
-								<a href="/bmi/decisiontree/index.cfm">Home 
-									<i class="icon-home">
-									</i></a>
-							</li>
-							<li><a href="#about">
-									About 
-								</a></li>
-							<li>
-								<a href="#contact">Site Management Contact</a>
-							</li>
+							<cfif #IsDefined("url.action")# and #url.action# eq "main.contact">
+								<li>
+									<a href="/bmi/decisiontree/index.cfm">Home 
+										<i class="icon-home">
+										</i></a>
+								</li>
+								<li class="active">
+									<a href="index.cfm?action=main.contact">Site Management Contact</a>
+								</li>
+							<cfelse>
+								<li class="active">
+									<a href="/bmi/decisiontree/index.cfm">Home 
+										<i class="icon-home">
+										</i></a>
+								</li>
+								<li>
+									<a href="index.cfm?action=main.contact">Site Management Contact</a>
+								</li>							
+							</cfif>
 						</ul>
 					</div>
 					<!--/.nav-collapse -->
@@ -98,7 +106,7 @@
 												<a href="index.cfm?action=code.listByCategory" title="View the list of indicators">Angiographic and Clinical Indicators (By Category)</a>
 											</li>											
 											<li>
-												<a href="index.cfm?action=code.form" title="Fill out form to add new indicators">Add New Indicators</a>
+												<a href="index.cfm?action=code.form" title="Fill out form to add new indicators">Add New Indicator Codes</a>
 											</li>
 											<li class="divider"></li>
 										</cfif>
@@ -133,6 +141,7 @@
 							<div class="hero-unit well leaderboard">
 								<h1>Decision Search Tree</h1>
 								<p>CABG/PCI intervention based on angiographic and clinical findings.</p>
+								<p class="small">PI: Omar Lattouf MD/PhD<br/><em>Version 1.0</em></p>								
 							</div>
 						</div>
 					</div>			

@@ -4,7 +4,7 @@
 	<cfset variables.desc = "" />
 	<cfset variables.comp_ID = "" />
 	<cfset variables.comp_char = "" />	
-	<cfset variables.CAGB = "" />	
+	<cfset variables.CABG = "" />	
 	<cfset variables.pci = "" />
 		
 	<cffunction name="init" access="public" output="false" returntype="Rule">
@@ -46,12 +46,12 @@
 	</cffunction>		
 
 
-	<cffunction name="setCAGB" access="public" output="false">
-		<cfargument name="CAGB" type="string" required="true" />
-		<cfset variables.CAGB = arguments.CAGB />
+	<cffunction name="setCABG" access="public" output="false">
+		<cfargument name="CABG" type="string" required="true" />
+		<cfset variables.CABG = arguments.CABG />
 	</cffunction>
-	<cffunction name="getCAGB" access="public" returntype="string" output="false">
-		<cfreturn variables.CAGB />
+	<cffunction name="getCABG" access="public" returntype="string" output="false">
+		<cfreturn variables.CABG />
 	</cffunction>
 	
 	<cffunction name="setPci" access="public" output="false">

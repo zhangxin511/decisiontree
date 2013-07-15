@@ -10,9 +10,15 @@
 </script>
 <cfset local.code = rc.code>
 <cfset local.parents = rc.parents>
+<cfset local.available=rc.available>
+>
 <cfoutput>
 	<form class="form-horizontal" method="post" action="index.cfm?action=code.save">
-		<legend>Enter code information</legend>
+		<cfif local.code.getID()>
+			<legend>Edit existing code information</legend>
+		<cfelse>
+			<legend>Enter new code information</legend>
+		</cfif>
 		<input type="hidden" name="id" id="id" value="#local.code.getID()#">
 		<cfif structKeyExists(rc, "way")>
 			<input type="hidden" name="way" id="way" value="#rc.way#">
@@ -24,13 +30,6 @@
 			</div>
  	
 		</div>
-		
-		<div class="control-group">
-			<label for="char_code" class="control-label">Indicator Database Code:</label>
-			<div class="controls">
-				<input type="text" name="char_code" id="char_code" value="#local.code.getChar_code()#" maxlength="4" placeholder="Enter 1-2 Alphabets Codes" required>
-			</div>	 
-	  	</div>
 
   		<div class="control-group">
 			<label for="parent_ID" class="control-label">Parent Indicator:</label>
@@ -55,9 +54,23 @@
 		</div>
 		
 		<div class="control-group">
+			<label for="char_code" class="control-label">Indicator Database Code:</label>
 			<div class="controls">
-				<input type="submit" value="Save Code" class="btn btn-primary">
-			</div>
-		</div>					
+				<input type="text" name="char_code" id="char_code" value="#local.code.getChar_code()#" maxlength="4" placeholder="Enter 1-2 Alphabets Codes" required>
+				<span class="help-block">
+					<div id="help" name="help"  class="alert alert-info" style="display: none;">
+				  		<button type="button" class="close" data-dismiss="alert">&times;</button>
+				  		New root codes could be #local.available#.
+					</div>
+				</span>				
+			</div>	 
+	  	</div>		
+		
+		<div class="form-actions">
+		  <button type="submit" class="btn btn-primary">Save changes</button>
+		  <button type="reset" class="btn">Cancel</button>
+		</div>			
 	</form>
 </cfoutput>
+
+<script src="assets/js/codehelp.js" type="text/javascript"></script>

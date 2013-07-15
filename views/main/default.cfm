@@ -13,5 +13,5 @@
 	<cfelse>
 		Have a good one, enjoy a cup of coffee!
 	</cfif>
-	<br/>Please note: your session will be expired after 10 minutes inactive.
+	<br/>Please note: Your session will expire after 30 minutes of inactivity.
 </div>

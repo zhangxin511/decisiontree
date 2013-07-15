@@ -1,10 +1,13 @@
 <cfcomponent displayname="CodeService" output="false">
 	<cfset variables.codes = structNew()>
+	<cfset variables.chars = "ABCDEFGHIGKLMNOPQRSTUVWXYZ">
 	<!---The new() method--->
 	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfscript>
 			list();
-		</cfscript>		
+							
+		</cfscript>	
+
 		<cfreturn this>
 	</cffunction>
 	
@@ -39,7 +42,7 @@
 		<cfset local.codes = structNew()>
 
 		<cfquery name="qGetSelection" datasource="#application.dsn#">
-			SELECT     Description, composed_charid, CAGB, PCI, ID as rule_ID, composed_id
+			SELECT     Description, composed_charid, CABG, PCI, ID as rule_ID, composed_id
 			FROM         tbl_rules
 			WHERE     (ID IN
 			                          (SELECT     rule_ID
@@ -240,7 +243,26 @@
 		</cfscript>		
 		<cfreturn local.codes>
     </cffunction>
-			
+
+	<cffunction name="getAvailableParentList" access="public" output="false" returntype="string">
+		<cfset local.availablecode = "">
+		
+		<cfquery name="qGetCodes" datasource="#application.dsn#">
+			SELECT     distinct Char_code
+			FROM         tbl_codes
+			where parent_ID=0
+		</cfquery>	
+		
+		<cfloop	index="intChar"	from="1" to="#Len(variables.chars)#"step="1">
+			<cfset strChar = Mid( variables.chars, intChar, 1 ) />
+		 	<cfif not #ListFind(ValueList(qGetCodes.Char_code),strChar)#>
+		 		<cfset local.availablecode=#ListAppend(local.availablecode,strChar)#>
+		 	</cfif>
+
+		</cfloop>
+		<cfreturn local.availablecode>
+    </cffunction>
+				
 	<cffunction name="validate" access="public" output="true" returntype="Array">
 		<cfargument name="code" type="any" required="true" />
 		<cfargument name="name" type="string" required="false" default="" />

@@ -43,4 +43,4 @@
 </table>
 </cfoutput>
 
-<a href="index.cfm?action=code.form">Add new code?</a>
+<a href="index.cfm?action=code.form&way=list">Add new code?</a>

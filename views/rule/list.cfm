@@ -1,5 +1,5 @@
 <ul class="breadcrumb">
-	Your current location:  <li class="active"><a href="#">Home</a><span class="divider">/</span></li>
+	Your current location:  <li><a href="#">Home</a><span class="divider">/</span></li>
 	<li><a href="#">DST Management</a> <span class="divider">/</span></li>
 	<li class="active">List Rules</li>
 </ul>
@@ -32,7 +32,7 @@
 					<td><a href="index.cfm?action=rule.form&id=#local.rule.getID()#&way=list">#local.rule.getDesc()#</a></td>
 					<td>#local.rule.getComp_char()#</td>
 					<td>#local.rule.getComp_ID()#</td>
-					<td>#local.rule.getCAGB()#</td>
+					<td>#local.rule.getCABG()#</td>
 					<td>#local.rule.getPCI()#</td>					
 					<td><a href="index.cfm?action=rule.delete&id=#local.rule.getID()#">DELETE</a></td>
 				</tr>

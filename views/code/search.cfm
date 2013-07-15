@@ -38,5 +38,5 @@
 		</cfloop>		
 	</ul>	
 </div>
-<script src="assets/js/collapse.js">>
+<script src="assets/js/collapse.js" type="text/javascript">
 </script>
